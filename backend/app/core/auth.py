@@ -1,6 +1,6 @@
 from fastapi import Request, Response, HTTPException
 from jwt import ExpiredSignatureError, InvalidTokenError
-from backend.app.core.setting import settings
+from app.core.setting import setting
 from app.core.jwt_handle import verify_token
 from typing import Optional
 
@@ -9,7 +9,7 @@ def set_auth_cookies(response:Response, access_token:str, refresh_token:str)->No
     response.set_cookie(
         key='access_token',
         value=access_token,
-        max_age=int(settings.access_token_expire_seconds),
+        max_age=int(setting.access_token_expire_seconds),
         secure=False,
         httponly=True,
         samesite='Lax',
@@ -18,7 +18,7 @@ def set_auth_cookies(response:Response, access_token:str, refresh_token:str)->No
     response.set_cookie(
         key='refresh_token',
         value=refresh_token,
-        max_age=int(settings.refresh_token_expire_seconds),
+        max_age=int(setting.refresh_token_expire_seconds),
         secure=False,
         httponly=True,
         samesite='Lax',

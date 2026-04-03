@@ -1,7 +1,7 @@
 from pydantic_settings import BaseSettings
 
 # 외부 값 없을 경우 사용할 기본값
-class Settings(BaseSettings):
+class Setting(BaseSettings):
     db_user:str="root"
     db_password:str="1234"
     db_host:str="localhost"
@@ -9,11 +9,11 @@ class Settings(BaseSettings):
     db_name:str="board"
 
 # 설정 관리: 환경변수에서 값을 자동으로 불러올 수 있는 클래스
-class Config:
-    env_file=".env"
-    case_sensitive=True
-    extra="allow"
-    populate_by_name=True
+    class Config:
+        env_file=".env"
+        case_sensitive=True
+        extra="allow"
+        populate_by_name=True
 
     @property
     def tmp_db(self) -> str:
@@ -27,4 +27,4 @@ class Config:
     def sync_db_url(self) -> str:
         return f"mysql+pymysql://{self.tmp_db}"
 
-settings=Settings()
+setting=Setting()
