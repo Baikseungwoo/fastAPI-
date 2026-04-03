@@ -1,6 +1,6 @@
 from fastapi import Request, Response, HTTPException
 from jwt import ExpiredSignatureError, InvalidTokenError
-from app.core.settings import settings
+from backend.app.core.setting import settings
 from app.core.jwt_handle import verify_token
 from typing import Optional
 
