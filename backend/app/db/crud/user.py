@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import select, exists
 from app.db.models import User
-# from app.db.scheme.user import CreateUser, UpdateUser
+from app.db.scheme.user import CreateUser, UpdateUser
 
 class UserCrud:
 
@@ -46,23 +46,23 @@ class UserCrud:
 
 
     # C U D
-    # @staticmethod
-    # async def create(db:AsyncSession, user:CreateUser)-> User:
-    #     db_user=User(**user.model_dump())
-    #     db.add(db_user)
-    #     await db.flush()
-    #     return db_user
+    @staticmethod
+    async def create(db:AsyncSession, user:CreateUser)-> User:
+        db_user=User(**user.model_dump())
+        db.add(db_user)
+        await db.flush()
+        return db_user
 
-    # @staticmethod
-    # async def update_by_id(db:AsyncSession, use_id:int, user:UpdateUser)-> User | None:
-    #     db_user=await db.get(User, use_id)
-    #     if db_user:
-    #         update_data=user.model_dump(exclude_unset=True)
-    #         for key, value in update_data.items():
-    #             setattr(db_user, key, value)
-    #             await db.flush()
-    #         return db_user
-    #     return None
+    @staticmethod
+    async def update_by_id(db:AsyncSession, use_id:int, user:UpdateUser)-> User | None:
+        db_user=await db.get(User, use_id)
+        if db_user:
+            update_data=user.model_dump(exclude_unset=True)
+            for key, value in update_data.items():
+                setattr(db_user, key, value)
+                await db.flush()
+            return db_user
+        return None
 
     @staticmethod
     async def delete_by_id(db:AsyncSession, user_id:int)-> User | None:
@@ -75,8 +75,11 @@ class UserCrud:
     
 
     # 토큰
-    # @staticmethod
-    # async def get_by_refresh_token(db:AsyncSession,refresh_token:str):
+    @staticmethod
+    async def get_by_refresh_token(db:AsyncSession, refresh_token:str):
+        return (await db.execute(
+            select(User).where(User.refresh_token==refresh_token)
+        )).scalar_one_or_none()
 
     @staticmethod
     async def update_refresh_token_by_id(
