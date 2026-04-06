@@ -3,6 +3,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
 from sqlalchemy import  TIMESTAMP, func, ForeignKey
 # from .user import User
+# from .product import Product
 
 class Cart(Base):
     __tablename__="cart"
@@ -14,3 +15,4 @@ class Cart(Base):
     )
 
     # user: Mapped["User"]=relationship("User", back_populates="carts")
+    # product: Mapped["Product"]=relationship("Product", back_populates="carts")
