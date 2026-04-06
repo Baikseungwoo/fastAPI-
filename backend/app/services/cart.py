@@ -9,7 +9,7 @@ from app.db.scheme.cart import CartCreate
 class CartService:
     @staticmethod
     async def add_to_cart(db: AsyncSession, user_id: int, cart_data: CartCreate):
-        # 같은 상품 중복 담기 방지
+        # 중복방지
         exists = await CartCrud.get_by_user_and_product(db, user_id, cart_data.pro_id)
         if exists:
             raise HTTPException(

@@ -31,6 +31,7 @@ class CartCrud:
         return result.scalar_one_or_none()
 
     @staticmethod
+    #중복방지
     async def get_by_user_and_product(db: AsyncSession, user_id: int, product_id: int) -> Cart | None:
         query = select(Cart).where(Cart.use_id == user_id, Cart.pro_id == product_id)
         result = await db.execute(query)
