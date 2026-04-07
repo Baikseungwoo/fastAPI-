@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.concurrency import asynccontextmanager
 from app.db.database import Base, async_engine
 from app.middleware.token_refresh import RefreshTokenMiddleware
+from app.routers import user
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
@@ -16,8 +17,8 @@ async def lifespan(app:FastAPI):
 app=FastAPI(lifespan=lifespan)
 
 
-# app.include_router(경로.router) 추후 연결
-
+# app.include_router(경로.router) 연결
+app.include_router(user.router)
 
 
 

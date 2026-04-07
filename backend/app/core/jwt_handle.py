@@ -18,9 +18,9 @@ def verify_pw(plain_pw:str, hashed_pw:str)->bool:
     return pw_crypt.verify(trunc_pw, hashed_pw)
 
 # 토큰 생성
-def create_token(uid:int, expires_delta:timedelta, **kwargs)->str:
-    to_encode=kwargs.copy()
+def create_token(uid:int, expires_delta:int, **kwargs)->str:
     expire=datetime.now(timezone.utc)+timedelta(seconds=expires_delta)
+    to_encode=kwargs.copy()
     to_encode.update({'exp':expire, 'uid':uid})
     encoded_jwt=jwt.encode(to_encode, setting.secret_key, setting.jwt_algorithm)
     return encoded_jwt

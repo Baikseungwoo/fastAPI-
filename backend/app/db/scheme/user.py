@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
 from datetime import datetime, timezone
 from typing import Annotated
 
@@ -12,9 +12,14 @@ class CreateUser(BaseModel):
     email:str
     password:Annotated[str,Field(max_length=72)]
 
-class UpdateUser(BaseModel):
-    email:str
-    password:Annotated[str,Field(max_length=72)]
+# 이메일과 비번 업데이트도 UpdateUser로 묶을 수 있는지?
+class UpdateEmail(BaseModel):
+    old_email:str
+    new_email:Annotated[str,EmailStr]
+
+class UpdatePassword(BaseModel):
+    old_password:str
+    new_password:Annotated[str,Field(min_length=8, max_length=72)]    
 
 class LoginUser(BaseModel):
     name:str | None = None
@@ -30,3 +35,11 @@ class UserInDB(UserBase):
 
 class ReadUser(UserInDB):
     pass
+
+class DeleteUser(BaseModel):
+    password:str
+
+# class TokenResponse(BaseModel):
+#     access_token:str
+#     refresh_token:str
+#     token_type:str
