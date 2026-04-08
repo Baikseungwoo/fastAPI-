@@ -1,8 +1,10 @@
+from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import select, exists
 from app.db.models import User
-from app.db.scheme.user import CreateUser
+from app.db.scheme.user import CreateUser,LoginUser,ReadUser
+from typing import Optional
 
 class UserCrud:
 
@@ -14,24 +16,12 @@ class UserCrud:
         await db.flush()
         return db_user
     
-    # 로그인 
-
-
-    # 사용자 정보 (하나로 묶기)
+    # 로그인 / 사용자 정보 조회
     @staticmethod
-    async def get_by_id(db:AsyncSession, user_id:int)-> User | None:
-        result=await db.execute(select(User).filter(User.use_id==user_id))
-        return result.scalar_one_or_none()
-        
-    @staticmethod
-    async def get_by_name(db:AsyncSession, username:str)-> User | None:
-        result=await db.execute(select(User).filter(User.username==username))
-        return result.scalar_one_or_none()
-
-    @staticmethod
-    async def get_by_email(db:AsyncSession, email:str)-> User | None:
-        result=await db.execute(select(User).filter(User.email==email))
-        return result.scalar_one_or_none()
+    async def get_by_name(db:AsyncSession, name:str)-> User:    
+        return (await db.execute(
+            select(User).filter(User.use_name==name)
+        )).scalar_one_or_none()
 
     # 이메일 재설정
     @staticmethod
@@ -50,18 +40,6 @@ class UserCrud:
             db_user.use_password=hashed_pw
             await db.flush()
         return db_user
-    
-    # 위의 재설정 위한 코드도 하나로 묶을 수 있는건가
-    # @staticmethod
-    # async def update_by_id(db:AsyncSession, use_id:int, user:UpdateUser)-> User | None:
-    #     db_user=await db.get(User, use_id)
-    #     if db_user:
-    #         update_data=user.model_dump(exclude_unset=True)
-    #         for key, value in update_data.items():
-    #             setattr(db_user, key, value)
-    #         await db.flush()
-    #         return db_user
-    #     return None
 
     # 계정 삭제
     @staticmethod
@@ -73,17 +51,18 @@ class UserCrud:
             return db_user
         return None
 
-    # 중복 검사 (하나로 묶기)
-    @staticmethod
-    async def exists_by_email(db:AsyncSession, email:str)-> bool:
-        return (await db.execute(
-            select(exists().where(User.use_email==email))
-        )).scalar()
-
+    # 닉네임 중복 검사
     @staticmethod
     async def exists_by_name(db:AsyncSession, name:str)-> bool:
         return (await db.execute(
             select(exists().where(User.use_name==name))
+        )).scalar()
+    
+    # 이메일 중복 검사
+    @staticmethod
+    async def exists_by_email(db:AsyncSession, email:str)-> bool:
+        return (await db.execute(
+            select(exists().where(User.use_email==email))
         )).scalar()
     
     # 토큰
