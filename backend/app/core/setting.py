@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 
 # 외부 값 없을 경우 사용할 기본값
@@ -13,13 +13,12 @@ class Setting(BaseSettings):
     access_token_expire_seconds:int=Field(900, alias="ACCESS_TOKEN_EXPIRE")
     refresh_token_expire_seconds:int=Field(604800, alias="REFRESH_TOKEN_EXPIRE")
 
-
-# 설정 관리: 환경변수에서 값을 자동으로 불러올 수 있는 클래스
-    class Config:
-        env_file=".env"
-        case_sensitive=True
-        extra="allow"
+    model_config=SettingsConfigDict(
+        env_file=".env",
+        case_sensitive=True,
+        extra="allow",
         populate_by_name=True
+    )
 
     @property
     def tmp_db(self) -> str:

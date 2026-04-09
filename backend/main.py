@@ -6,6 +6,7 @@ from app.middleware.token_refresh import RefreshTokenMiddleware
 from app.routers.cart import router as cart_router
 from app.routers.purchase import router as purchase_router
 
+from app.routers import user
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
@@ -19,9 +20,9 @@ async def lifespan(app:FastAPI):
 app=FastAPI(lifespan=lifespan)
 
 
-# app.include_router(경로.router) 추후 연결
+# app.include_router(경로.router) 연결
 app.include_router(cart_router)
-app.include_router(purchase_router)
+app.include_router(purchase_router)app.include_router(user.router)
 
 
 

@@ -1,7 +1,7 @@
-from fastapi import FastAPI, Request
+from fastapi import Request
 from app.core.jwt_handle import verify_token, create_access_token, create_refresh_token
 from app.core.auth import set_auth_cookies
-# from app.db.crud import UserCrud
+from app.db.crud import UserCrud
 from app.db.database import get_db
 from starlette.middleware.base import BaseHTTPMiddleware
 from jwt import ExpiredSignatureError, InvalidTokenError
@@ -35,7 +35,7 @@ class RefreshTokenMiddleware(BaseHTTPMiddleware):
             # DB에 새 리프레시 토큰 저장
             try:
                 db=await anext(get_db())
-                # await UserCrud.update_refresh_token_by_id(db, user_id, new_refresh_token)
+                await UserCrud.update_refresh_token_by_id(db, user_id, new_refresh_token)
                 await db.commit()
             except Exception:
                 await db.rollback()
