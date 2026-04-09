@@ -12,4 +12,4 @@ class Factory(Base):
     fac_size = Column(String(5), nullable=True)
     fac_pw = Column(String(100), nullable=False)
 
-    products = relationship("Product", back_populates="Factory")
+    products = relationship("Product", back_populates="factory")
