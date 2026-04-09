@@ -10,6 +10,6 @@ class Factory(Base):
     fac_name = Column(String(50), nullable=False)
     fac_email = Column(String(50), unique=True, nullable=False)
     fac_size = Column(String(5), nullable=True)
-    fac_pw = Column(String(255), nullable=False)
+    fac_pw = Column(String(100), nullable=False)
 
     products = relationship("Product", back_populates="Factory")
