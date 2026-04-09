@@ -24,6 +24,8 @@ app=FastAPI(lifespan=lifespan)
 app.include_router(cart_router)
 app.include_router(purchase_router)
 app.include_router(user_router)
+app.include_router(factory_router)
+app.include_router(product_router)
 
 
 
