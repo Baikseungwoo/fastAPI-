@@ -22,3 +22,7 @@ class ProductResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# Backward-compatible alias for existing router imports.
+ProductRead = ProductResponse

@@ -11,4 +11,4 @@ class User(Base):
     use_email:Mapped[str]=mapped_column(String(100), unique=True, nullable=False)
     use_password:Mapped[str]=mapped_column(String(100), nullable=False)
     use_joined_at:Mapped[datetime]=mapped_column(TIMESTAMP, server_default=func.now(), nullable=False)
-    refresh_token:Mapped[str]=mapped_column(String(100), nullable=True)
+    refresh_token:Mapped[str]=mapped_column(String(300), nullable=True)

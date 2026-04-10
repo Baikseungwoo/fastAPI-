@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.auth import get_factory_id
 from app.db.database import get_db
-from app.db.scheme.factory import FactoryCreate, FactoryLogin, FactoryUpdate, FactoryRead, FactoryToken
+from app.db.scheme.factory import FactoryCreate, FactoryLogin, UpdateFactory, FactoryRead, FactoryToken
 from app.services.factory import FactoryService
 
 router = APIRouter(prefix="/factory", tags=["factory"])
@@ -28,7 +28,7 @@ async def get_my_factory(db: AsyncSession = Depends(get_db), fac_id: int = Depen
 
 # 내 정보 수정
 @router.put("/me", response_model=FactoryRead, status_code=status.HTTP_200_OK)
-async def update_my_factory(factory_data: FactoryUpdate, db: AsyncSession = Depends(get_db), fac_id: int = Depends(get_factory_id)):
+async def update_my_factory(factory_data: UpdateFactory, db: AsyncSession = Depends(get_db), fac_id: int = Depends(get_factory_id)):
     return await FactoryService.update_factory(db, fac_id, factory_data)
 
 

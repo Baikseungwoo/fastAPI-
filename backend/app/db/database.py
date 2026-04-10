@@ -7,7 +7,11 @@ from app.core.setting import setting
 async_engine=create_async_engine(setting.db_url, echo=False)
 
 AsyncSessionLocal = sessionmaker(
-    autocommit=False, autoflush=False, bind=async_engine, class_=AsyncSession
+    autocommit=False,
+    autoflush=False,
+    bind=async_engine,
+    class_=AsyncSession,
+    expire_on_commit=False,
 )
 
 sync_engine=create_engine(setting.sync_db_url, pool_pre_ping=True)
