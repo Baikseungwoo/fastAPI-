@@ -6,6 +6,8 @@ from app.middleware.token_refresh import RefreshTokenMiddleware
 from app.routers.cart import router as cart_router
 from app.routers.purchase import router as purchase_router
 from app.routers.user import router as user_router
+from app.routers.product import router as product_router
+from app.routers.factory import router as factory_router
 
 
 @asynccontextmanager
