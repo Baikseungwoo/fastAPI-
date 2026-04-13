@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.concurrency import asynccontextmanager
 from app.db.database import Base, async_engine
 from app.middleware.token_refresh import RefreshTokenMiddleware
+from app.routers import factory, product
+
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
@@ -14,6 +16,9 @@ async def lifespan(app:FastAPI):
     await async_engine.dispose()
 
 app=FastAPI(lifespan=lifespan)
+
+app.include_router(factory.router)
+app.include_router(product.router)
 
 
 # app.include_router(경로.router) 추후 연결
