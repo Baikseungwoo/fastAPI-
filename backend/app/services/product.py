@@ -23,9 +23,15 @@ class ProductService:
     async def get_product_list(db: AsyncSession):
         return await ProductCrud.get_list(db)
 
+    # 내 상품 전체 조회
+    @staticmethod
+    async def get_my_product_list(db: AsyncSession, fac_id: int):
+        products = await ProductCrud.get_list(db)
+        return [product for product in products if product.fac_id == fac_id]
+
     # 상품 단건 조회
     @staticmethod
-    async def get_product_detail(db: AsyncSession, pro_id: int):
+    async def get_product_by_id(db: AsyncSession, pro_id: int):
         product = await ProductCrud.get_by_id(db, pro_id)
         if not product:
             raise HTTPException(
